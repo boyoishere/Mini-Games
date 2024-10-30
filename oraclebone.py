@@ -41,7 +41,7 @@ def sym_cracks(t):
         t.pendown()
         cracks(t, random.randint(80, 120), random.randint(15, 30), random.randint(3, 5))
 # -------------- MAIN --------------
-dec1 = str(input("Is your divination for: (a) today or (b) a custom date? ")).upper()
+dec1 = str(input("Are you performing divination (a) today or (b) for a custom date? ")).upper()
 if dec1 == "A":
     day = ganzhi(datetime.now())
     month = cnmonth(datetime.now().month)
