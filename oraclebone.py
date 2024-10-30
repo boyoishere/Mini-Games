@@ -1,10 +1,16 @@
-import numpy as np
+#--------------------------------------
+# Created On: 29 October 2024
+# Title: Watered Down Oracle Bone Reading Program
+# Code for generating Turtle graphics were written by ChatGPT
+# 
+# For fun and entertainment purposes only. 
+# It does not represent serious oracle bone reading practices. 
+# There is also room for improvement in writing 命辭 (divination text).
+#--------------------------------------
 import random
 import time
+import turtle as ttl
 from datetime import datetime, timedelta
-# -------------- INITIALIZATIONS --------------
-inquirer = ""
-location = ""
 # -------------- FUNCTIONS --------------
 def ganzhi(date):
     gan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸']
@@ -17,12 +23,29 @@ def ganzhi(date):
 def cnmonth(month):
     cnmonth = ['一', '二', '三', '亖', '五', '六', '七', '八', '九', '十', '十一', '十二', '十三']
     return cnmonth[month - 1]
+def cracks(t, length, angle, depth):
+    if depth == 0 or length < 5:
+        return
+    t.forward(length)
+    for turn in [angle, -angle]:  # Left and right branches
+        if random.choice([True, False]):
+            t.right(turn)
+            cracks(t, length * random.uniform(0.5, 0.75), angle, depth - 1)
+            t.left(turn)  # Return to original direction
+    t.backward(length)
+def sym_cracks(t):
+    for x in [-100, 0, 100]:  # Left, middle, and right positions
+        t.penup()
+        t.goto(x, -100)
+        t.setheading(60 if x < 0 else (120 if x > 0 else 90))
+        t.pendown()
+        cracks(t, random.randint(80, 120), random.randint(15, 30), random.randint(3, 5))
 # -------------- MAIN --------------
-dec1 = str(input("Are you zhanbu for today? (y/n): "))
-if dec1 == "y":
+dec1 = str(input("Is your divination for: (a) today or (b) a custom date? ")).upper()
+if dec1 == "A":
     day = ganzhi(datetime.now())
     month = cnmonth(datetime.now().month)
-elif dec1 == "n":
+elif dec1 == "B":
     yearx = int(input("Input year: "))
     monthx = int(input("Input month (1-13): "))
     while monthx < 1 or monthx > 13:
@@ -43,34 +66,43 @@ else:
     print("Invalid input. Bye.")
     exit()
 
-diviner = str(input("Diviner name: "))
+diviner = str(input("Diviner Name: ")).upper()
+inquirer = input("Inquirer Name (leave blank if none): ").upper() or ""
+progname = inquirer if inquirer else diviner
+location = input("Location (leave blank if none): ").upper() or ""
+question = input("Inquiry (subject/state, e.g., 'Smith tomorrow travels / safe ' or '今月 / 雨'): ").upper()
 
-dec2 = str(input("Is there another inquirer? (y/n): "))
-if dec2 == "y":
-    inquirer = str(input("Inquirer name (optional): "))
-
-dec3 = str(input("Is there a location? (y/n): "))
-if dec3 == "y":
-    location = str(input("Location (optional): "))
-question = str(input("Question (separate subject and predicate with a space " "): "))
-
-# time.sleep(1)
-# print("Calculating...")
-# time.sleep(5)
-
-inquirer = inquirer[0] if inquirer else ""
-location = ("才" + location[0]) if location else ""
-diviner = diviner[0] + "貞"
-q1 = question.replace(" ", "")
-q2 = question.replace(" ", "不其")
+inquirer = inquirer if inquirer else ""
+location = ("才" + location) if location else ""
+diviner = diviner + "貞"
+q1 = question.replace(" / ", "")
+q2 = question.replace(" / ", "不其")
 month = month + "月"
+precharge = day + inquirer + "卜" + location + diviner + q2 + month + "    " + (day + inquirer + "卜" + location + diviner + q1 + month)[::-1]
 
-# 前辭
-# 
-# 占辭：“王𰉏曰：其隹（唯）丁冥（娩），嘉；其隹（唯）庚冥（娩），引吉。
-# 驗辭：允，吉，不，
+time.sleep(2)
+print("\n" + precharge + "\n")
+time.sleep(1)
+print("祝曰：")
+print("假之玉靈夫子。夫子玉靈。荊灼而心。令而先知。")
+print("而上行於天。下行於淵。諸靈數。莫如汝信。今日良日。行一良貞。")
+print("某欲卜某。即得而喜。不得而悔。")
+print("即得。發鄉我身長大。首足收人皆上偶。不得。發鄉我身挫折。中外不相應。首足滅去。\n")
 
-print("\n")
-print(day + inquirer + "卜" + location + diviner + q2 + month + "    " + (day + inquirer + "卜" + location + diviner + q1 + month)[::-1])
-print("\n")
+ttl.setup(432, 432)  # Smaller window size
+ttl.bgcolor("black")
+t = ttl.Turtle()
+t.speed(0)
+t.color("white")
+sym_cracks(t)
+t.hideturtle()
 
+print("Input your prognostication below: ")
+prog = str(input(progname + "占曰：")).upper()
+
+print("---------- Reading Summary ----------")
+print("Preface and Charge:\n" + precharge)
+print("\nPrognostication:\n" + progname + "占曰：" + prog)
+print("-------------------------------------")
+
+ttl.done()
