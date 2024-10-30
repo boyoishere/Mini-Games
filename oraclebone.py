@@ -2,6 +2,9 @@ import numpy as np
 import random
 import time
 from datetime import datetime, timedelta
+# -------------- INITIALIZATIONS --------------
+inquirer = ""
+location = ""
 # -------------- FUNCTIONS --------------
 def ganzhi(date):
     gan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸']
@@ -13,8 +16,8 @@ def ganzhi(date):
     return gan + zhi
 def cnmonth(month):
     cnmonth = ['一', '二', '三', '亖', '五', '六', '七', '八', '九', '十', '十一', '十二', '十三']
-    return cnmonth[month - 1] + "月"
-# ------ main ------
+    return cnmonth[month - 1]
+# -------------- MAIN --------------
 dec1 = str(input("Are you zhanbu for today? (y/n): "))
 if dec1 == "y":
     day = ganzhi(datetime.now())
@@ -40,11 +43,16 @@ else:
     print("Invalid input. Bye.")
     exit()
 
-inquirer = str(input("Inquirer name (optional): "))
-location = str(input("Location (optional): "))
 diviner = str(input("Diviner name: "))
 
-q1 = str(input("The question: "))
+dec2 = str(input("Is there another inquirer? (y/n): "))
+if dec2 == "y":
+    inquirer = str(input("Inquirer name (optional): "))
+
+dec3 = str(input("Is there a location? (y/n): "))
+if dec3 == "y":
+    location = str(input("Location (optional): "))
+question = str(input("Question (separate subject and predicate with a space " "): "))
 
 # time.sleep(1)
 # print("Calculating...")
@@ -53,6 +61,16 @@ q1 = str(input("The question: "))
 inquirer = inquirer[0] if inquirer else ""
 location = ("才" + location[0]) if location else ""
 diviner = diviner[0] + "貞"
+q1 = question.replace(" ", "")
+q2 = question.replace(" ", "不其")
 month = month + "月"
 
-print(day + inquirer + "卜" + location + diviner + "[命辭]" + month)
+# 前辭
+# 
+# 占辭：“王𰉏曰：其隹（唯）丁冥（娩），嘉；其隹（唯）庚冥（娩），引吉。
+# 驗辭：允，吉，不，
+
+print("\n")
+print(day + inquirer + "卜" + location + diviner + q2 + month + "    " + (day + inquirer + "卜" + location + diviner + q1 + month)[::-1])
+print("\n")
+
