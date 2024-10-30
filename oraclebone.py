@@ -70,13 +70,13 @@ diviner = str(input("Diviner Name: ")).upper()
 inquirer = input("Inquirer Name (leave blank if none): ").upper() or ""
 progname = inquirer if inquirer else diviner
 location = input("Location (leave blank if none): ").upper() or ""
-question = input("Inquiry (subject/state, e.g., 'Smith tomorrow travels / safe ' or '今月 / 雨'): ").upper()
+question = input("Inquiry (subject / state, e.g., 'tomorrow travels / safe ' or '今日 / 雨'): ").upper()
 
 inquirer = inquirer if inquirer else ""
 location = ("才" + location) if location else ""
 diviner = diviner + "貞"
 q1 = question.replace(" / ", "")
-q2 = question.replace(" / ", "不其")
+q2 = question.replace(" / ", "不")
 month = month + "月"
 precharge = day + inquirer + "卜" + location + diviner + q2 + month + "    " + (day + inquirer + "卜" + location + diviner + q1 + month)[::-1]
 
@@ -86,8 +86,8 @@ time.sleep(1)
 print("祝曰：")
 print("假之玉靈夫子。夫子玉靈。荊灼而心。令而先知。")
 print("而上行於天。下行於淵。諸靈數。莫如汝信。今日良日。行一良貞。")
-print("某欲卜某。即得而喜。不得而悔。")
-print("即得。發鄉我身長大。首足收人皆上偶。不得。發鄉我身挫折。中外不相應。首足滅去。\n")
+print(f"{diviner}欲卜{q1}。即得而喜。不得而悔。")
+# print("即得。發鄉我身長大。首足收人皆上偶。不得。發鄉我身挫折。中外不相應。首足滅去。\n")
 
 ttl.setup(432, 432)  # Smaller window size
 ttl.bgcolor("black")
@@ -97,7 +97,7 @@ t.color("white")
 sym_cracks(t)
 t.hideturtle()
 
-print("Input your prognostication below: ")
+print("\nInput your prognostication below: ")
 prog = str(input(progname + "占曰：")).upper()
 
 print("---------- Reading Summary ----------")
@@ -105,4 +105,4 @@ print("Preface and Charge:\n" + precharge)
 print("\nPrognostication:\n" + progname + "占曰：" + prog)
 print("-------------------------------------")
 
-ttl.done()
+ttl.mainloop()
