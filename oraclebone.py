@@ -96,6 +96,7 @@ t.speed(0)
 t.color("white")
 sym_cracks(t)
 t.hideturtle()
+ttl.mainloop()
 
 print("\nInput your prognostication below: ")
 prog = str(input(progname + "占曰：")).upper()
@@ -104,5 +105,3 @@ print("---------- Reading Summary ----------")
 print("Preface and Charge:\n" + precharge)
 print("\nPrognostication:\n" + progname + "占曰：" + prog)
 print("-------------------------------------")
-
-ttl.mainloop()
