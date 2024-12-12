@@ -1,6 +1,8 @@
+#--------------------------------------
 import pandas as pd
-
-# creating character mapping
+#--------------------------------------
+# FUNCTION
+#--------------------------------------
 def load(file_path):
     char_map = {"kangxi": {}, "all": {}}
     df = pd.read_csv(file_path, encoding='utf-8')
@@ -18,25 +20,29 @@ def load(file_path):
 char_map = load("zhengzi/char_map.csv")
 
 while True:
-    mode = input("Choose mode ('1' for kangxi or '2' for Vexing): ").strip().lower()
+    mode = input("===\nChoose mode ('1' for Kangxi Standards or '2' to be annoying): ").strip().lower()
     if mode == '1': mode_key = 'kangxi'
     elif mode == '2': mode_key = 'all'
     else:
-        print("Invalid mode. Choose '1' for kangxi or '2' for vexing.")
+        print("Invalid mode. Choose '1' for Kangxi Standards or '2' to be annoying): ")
         continue
-    text = input("READY >  ")
+    text = input("\nREADY >  ")
     replacements = char_map[mode_key]
     output = ''
-    for char in text:
-        if char in replacements:
-            output += replacements[char]
+    i = 0  # Initialize index to process the text
+    while i < len(text):
+        # Look for multi-character replacements starting at the current position
+        for j in range(i + 1, len(text) + 1):
+            term = text[i:j]
+            if term in replacements:
+                output += replacements[term]  # Replace the term
+                i = j  # Move the index past the replaced term
+                break
         else:
-            output += char
-    # output = ''.join([char_map[mode_key].get(char, char) for char in text])
-    print("=======================================")
-    print(f"OUTPUT > {output}")
+            # If no multi-character match is found, replace single character
+            output += text[i]
+            i += 1  # Move index forward for the next character
+    print(f"OUTPUT > {output}\n")
     exit_code = input("Type '3' to quit or press Enter to continue: ").strip().lower()
     if exit_code == '3':
         break
-
-# Sample input: 下週已約好去吃麵，聽說那家店的花椒牛肉麵真不錯，強烈推薦！吃完順便去前面的花市逛逛，聽說最近花開得特別好。
