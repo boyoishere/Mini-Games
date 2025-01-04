@@ -4,15 +4,15 @@ import pandas as pd
 # FUNCTION
 #--------------------------------------
 def load(file_path):
-    char_map = {"kangxi": {}, "all": {}}
+    char_map = {"boyo": {}, "all": {}}
     df = pd.read_csv(file_path, encoding='utf-8')
     for _, row in df.iterrows():
         trad = row['trad']
-        kangxi = row['kangxi'] if pd.notna(row['kangxi']) else ''
+        boyo = row['boyo'] if pd.notna(row['boyo']) else ''
         all = row['all'] if pd.notna(row['all']) else ''
         # Store the mappings in the dictionary
-        if kangxi:
-            char_map["kangxi"][trad] = kangxi
+        if boyo:
+            char_map["boyo"][trad] = boyo
         if all:
             char_map["all"][trad] = all
     return char_map
@@ -20,11 +20,11 @@ def load(file_path):
 char_map = load("zhengzi/char_map.csv")
 
 while True:
-    mode = input("===\nChoose mode ('1' for Kangxi Standards or '2' to be annoying): ").strip().lower()
-    if mode == '1': mode_key = 'kangxi'
+    mode = input("===\nChoose mode ('1' for boyo Standards or '2' to be annoying): ").strip().lower()
+    if mode == '1': mode_key = 'boyo'
     elif mode == '2': mode_key = 'all'
     else:
-        print("Invalid mode. Choose '1' for Kangxi Standards or '2' to be annoying): ")
+        print("Invalid mode. Choose '1' for boyo Standards or '2' to be annoying): ")
         continue
     text = input("\nREADY >  ")
     replacements = char_map[mode_key]
